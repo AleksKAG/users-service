@@ -22,43 +22,56 @@ func (h *Handler) CreateUser(ctx context.Context, req *userpb.CreateUserRequest)
 		return nil, err
 	}
 	return &userpb.CreateUserResponse{
-		User: &userpb.User{Id: u.ID, Email: u.Email},
+		User: &userpb.User{
+			Id:    u.ID,
+			Email: u.Email,
+		},
 	}, nil
 }
 
 func (h *Handler) GetUser(ctx context.Context, req *userpb.User) (*userpb.User, error) {
-	u, err := h.svc.GetUserByID(req.Id)
+	u, err := h.svc.GetUser(req.Id)
 	if err != nil {
 		return nil, err
 	}
-	return &userpb.User{Id: u.ID, Email: u.Email}, nil
+	return &userpb.User{
+		Id:    u.ID,
+		Email: u.Email,
+	}, nil
 }
 
 func (h *Handler) UpdateUser(ctx context.Context, req *userpb.UpdateUserRequest) (*userpb.UpdateUserResponse, error) {
-	u, err := h.svc.UpdateUserByID(req.Id, &user.User{Email: req.Email})
+	u, err := h.svc.UpdateUser(req.Id, req.Email)
 	if err != nil {
 		return nil, err
 	}
 	return &userpb.UpdateUserResponse{
-		User: &userpb.User{Id: u.ID, Email: u.Email},
+		User: &userpb.User{
+			Id:    u.ID,
+			Email: u.Email,
+		},
 	}, nil
 }
 
 func (h *Handler) DeleteUser(ctx context.Context, req *userpb.DeleteUserRequest) (*userpb.DeleteUserResponse, error) {
-	if err := h.svc.DeleteUserByID(req.Id); err != nil {
+	err := h.svc.DeleteUser(req.Id)
+	if err != nil {
 		return nil, err
 	}
 	return &userpb.DeleteUserResponse{Success: true}, nil
 }
 
 func (h *Handler) ListUsers(ctx context.Context, req *userpb.ListUsersRequest) (*userpb.ListUsersResponse, error) {
-	users, err := h.svc.GetAllUsers(req.Page, req.PageSize)
+	users, err := h.svc.ListUsers(int(req.Page), int(req.PageSize))
 	if err != nil {
 		return nil, err
 	}
-	pbUsers := make([]*userpb.User, 0, len(users))
-	for _, u := range users {
-		pbUsers = append(pbUsers, &userpb.User{Id: u.ID, Email: u.Email})
+	pbUsers := make([]*userpb.User, len(users))
+	for i, u := range users {
+		pbUsers[i] = &userpb.User{
+			Id:    u.ID,
+			Email: u.Email,
+		}
 	}
 	return &userpb.ListUsersResponse{Users: pbUsers}, nil
 }

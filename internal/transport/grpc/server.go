@@ -1,6 +1,7 @@
 package grpc
 
 import (
+	"log"
 	"net"
 
 	userpb "github.com/AleksKAG/project-protos/proto/user"
@@ -9,11 +10,13 @@ import (
 )
 
 func RunGRPC(svc *user.Service) error {
-	listener, err := net.Listen("tcp", ":50051")
+	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		return err
 	}
-	grpcServer := grpc.NewServer()
-	userpb.RegisterUserServiceServer(grpcServer, NewHandler(svc))
-	return grpcServer.Serve(listener)
+	grpcSrv := grpc.NewServer()
+	handler := NewHandler(svc)
+	userpb.RegisterUserServiceServer(grpcSrv, handler)
+	log.Println("Server running at :50051")
+	return grpcSrv.Serve(lis)
 }

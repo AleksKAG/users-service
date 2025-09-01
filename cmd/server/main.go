@@ -18,7 +18,6 @@ func main() {
 	log.Println("Service created")
 	log.Println("Starting gRPC server on :50051...")
 	if err := transportgrpc.RunGRPC(svc); err != nil {
-		log.Fatalf("gRPC server failed: %v", err)
+		log.Fatalf("Users gRPC server error: %v", err)
 	}
-	log.Println("Server running at :50051")
 }
