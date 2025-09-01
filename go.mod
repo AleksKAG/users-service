@@ -3,7 +3,7 @@ module github.com/AleksKAG/users-service
 go 1.24.5
 
 require (
-	github.com/AleksKAG/project-protos v1.0.0
+	github.com/AleksKAG/project-protos v1.1.0
 	google.golang.org/grpc v1.74.2
 	gorm.io/driver/sqlite v1.6.0
 	gorm.io/gorm v1.30.1
