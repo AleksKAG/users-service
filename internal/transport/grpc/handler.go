@@ -29,14 +29,16 @@ func (h *Handler) CreateUser(ctx context.Context, req *userpb.CreateUserRequest)
 	}, nil
 }
 
-func (h *Handler) GetUser(ctx context.Context, req *userpb.User) (*userpb.User, error) {
+func (h *Handler) GetUser(ctx context.Context, req *userpb.GetUserRequest) (*userpb.GetUserResponse, error) {
 	u, err := h.svc.GetUser(req.Id)
 	if err != nil {
 		return nil, err
 	}
-	return &userpb.User{
-		Id:    u.ID,
-		Email: u.Email,
+	return &userpb.GetUserResponse{
+		User: &userpb.User{
+			Id:    u.ID,
+			Email: u.Email,
+		},
 	}, nil
 }
 
