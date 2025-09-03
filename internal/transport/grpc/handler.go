@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"log"
 
 	userpb "github.com/AleksKAG/project-protos/proto/user"
 	"github.com/AleksKAG/users-service/internal/user"
@@ -30,8 +31,10 @@ func (h *Handler) CreateUser(ctx context.Context, req *userpb.CreateUserRequest)
 }
 
 func (h *Handler) GetUser(ctx context.Context, req *userpb.GetUserRequest) (*userpb.GetUserResponse, error) {
+	log.Printf("GetUser called with ID: %d", req.Id)
 	u, err := h.svc.GetUser(req.Id)
 	if err != nil {
+		log.Printf("GetUser error for ID %d: %v", req.Id, err)
 		return nil, err
 	}
 	return &userpb.GetUserResponse{
