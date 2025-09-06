@@ -15,21 +15,21 @@ func (r *Repository) Create(u User) (User, error) {
 	return u, result.Error
 }
 
-func (r *Repository) Get(id uint32) (User, error) {
+func (r *Repository) Get(id uint) (User, error) {
 	var u User
 	result := r.db.First(&u, id)
 	return u, result.Error
 }
 
 func (r *Repository) Update(u User) (User, error) {
-	result := r.db.Model(&User{}).Where("id = ?", u.ID).Update("email", u.Email)
+	result := r.db.Model(&u).Updates(User{Email: u.Email})
 	if result.Error != nil {
 		return User{}, result.Error
 	}
 	return u, nil
 }
 
-func (r *Repository) Delete(id uint32) error {
+func (r *Repository) Delete(id uint) error {
 	return r.db.Delete(&User{}, id).Error
 }
 
